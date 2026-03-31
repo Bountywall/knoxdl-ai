@@ -1,1 +1,51 @@
+name: NBA Daily Predictions
 
+on:
+  schedule:
+    # Runs at 10:00 AM ET (15:00 UTC) every day
+    # Early enough to have predictions ready before games start
+    - cron: '0 15 * * *'
+  workflow_dispatch:  # allows manual trigger from GitHub UI
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run prediction script
+        run: python predict.py
+
+      - name: Upload predictions.json to Cloudflare R2
+        env:
+          R2_ACCOUNT_ID:    ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_KEY:    ${{ secrets.R2_SECRET_KEY }}
+          R2_BUCKET:        ${{ secrets.R2_BUCKET }}
+        run: python upload_r2.py
+
+      - name: Save predictions as artifact (backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: predictions-${{ github.run_id }}
+          path: predictions.json
+          retention-days: 7
