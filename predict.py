@@ -476,6 +476,9 @@ def main():
     # Build defensive ratings for all teams (reuses boxscore cache)
     league_avg = build_defensive_ratings(all_team_ids)
 
+    # Build points-scored averages (needed for over/under)
+    build_pts_scored(all_team_ids)
+
     all_games_output = []
 
     for i, game in enumerate(games):
@@ -495,6 +498,7 @@ def main():
         print(f"\n  👥 {home} (home) vs {away} defense...")
         home_preds = process_team(home_id, home, away_id, league_avg, injured_players)
 
+        ou = predict_over_under(home_id, away_id, league_avg) or {}
         all_games_output.append({
             'game':         label,
             'home_team':    home,
@@ -502,6 +506,7 @@ def main():
             'game_time':    game.get('time', ''),
             'home_players': home_preds,
             'away_players': away_preds,
+            **ou,
         })
 
     output = {
