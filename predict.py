@@ -172,15 +172,16 @@ def parse_boxscore(game_id, team_espn_id=None):
 
     boxscore = data.get('boxscore', {})
 
-    # ── Extract scores per team ──────────────────────────────
+    # ── Extract scores per team (from header.competitions, not boxscore.teams) ──
     scores = {}
-    for team_data in boxscore.get('teams', []):
-        tid   = str(team_data.get('team', {}).get('id', ''))
-        score = team_data.get('score', 0)
-        try:
-            scores[tid] = float(score)
-        except:
-            pass
+    for comp in data.get('header', {}).get('competitions', []):
+        for competitor in comp.get('competitors', []):
+            tid   = str(competitor.get('team', {}).get('id', ''))
+            score = competitor.get('score', 0)
+            try:
+                scores[tid] = float(score)
+            except:
+                pass
 
     # ── Extract player stats per team ───────────────────────
     all_players = {}  # { team_id_str: { player_name: stats } }
