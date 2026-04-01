@@ -1,41 +1,39 @@
 name: NBA Daily Predictions
-
 on:
   schedule:
     - cron: '0 15 * * *'  # 10 AM ET daily
   workflow_dispatch:
 
+concurrency:
+  group: nba-predictions
+  cancel-in-progress: false
+
 jobs:
   predict:
     runs-on: ubuntu-latest
     timeout-minutes: 90
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-
       - name: Install dependencies
         run: pip install -r requirements.txt
-
       - name: Run prediction script
         run: python predict.py
-
       - name: Commit predictions.json to repo
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
           git add predictions.json
-          git diff --staged --quiet || git commit -m "chore: update predictions $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: update predictions $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
           git push
