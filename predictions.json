@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-01T19:11:19.779994",
+  "generated_at": "2026-04-01T20:10:23.849629",
   "season": "2025-26",
   "games": [
     {
@@ -430,7 +430,10 @@
           "def_factor": 1.0,
           "position": "G"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "ORL @ ATL",
@@ -818,7 +821,10 @@
           "def_factor": 1.0,
           "position": "F"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "MIA @ BOS",
@@ -1206,7 +1212,10 @@
           "def_factor": 1.0,
           "position": "C"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "MEM @ NY",
@@ -1580,7 +1589,10 @@
           "def_factor": 1.0,
           "position": "F"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "TOR @ SAC",
@@ -1968,7 +1980,10 @@
           "def_factor": 1.0,
           "position": "G"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "CHI @ IND",
@@ -2258,7 +2273,10 @@
           "def_factor": 1.0,
           "position": "G"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "HOU @ MIL",
@@ -2618,7 +2636,10 @@
           "def_factor": 1.0,
           "position": "F"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "UTAH @ DEN",
@@ -2978,7 +2999,10 @@
           "def_factor": 1.0,
           "position": "G"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     },
     {
       "game": "GS @ SA",
@@ -3394,7 +3418,10 @@
           "def_factor": 1.0,
           "position": "C"
         }
-      }
+      },
+      "predicted_total": 0.0,
+      "away_pts_pred": 0.0,
+      "home_pts_pred": 0.0
     }
   ]
 }
