@@ -260,7 +260,8 @@ def build_defensive_ratings(all_team_ids):
         pts_allowed = []
 
         for game_id in game_ids:
-            _, scores = parse_boxscore(game_id, team_espn_id)
+            cached = parse_boxscore(game_id)
+            scores = cached.get("scores", {}) if isinstance(cached, dict) else {}
             # Points allowed = points scored by the OTHER team
             for tid, pts in scores.items():
                 if str(tid) != str(team_espn_id):
@@ -402,7 +403,8 @@ def build_pts_scored(all_team_ids):
         game_ids = get_recent_game_ids(team_espn_id, team_abbrev)
         pts_list = []
         for game_id in game_ids:
-            _, scores = parse_boxscore(game_id, team_espn_id)
+            cached = parse_boxscore(game_id)
+            scores = cached.get("scores", {}) if isinstance(cached, dict) else {}
             if str(team_espn_id) in scores:
                 pts_list.append(scores[str(team_espn_id)])
         if pts_list:
