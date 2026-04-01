@@ -1,9 +1,2 @@
-aiohttp
-pandas
 numpy
-torch
-scikit-learn
-nba_api
-nest_asyncio
 requests
-boto3
