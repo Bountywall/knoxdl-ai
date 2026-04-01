@@ -1,1 +1,78 @@
-
+{
+  "generated_at": "2026-04-01T09:19:39.953794",
+  "season": "2025",
+  "games": [
+    {
+      "game": "WSH @ PHI",
+      "home_team": "PHI",
+      "away_team": "WSH",
+      "game_time": "2026-04-01T23:00Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "ORL @ ATL",
+      "home_team": "ATL",
+      "away_team": "ORL",
+      "game_time": "2026-04-01T23:00Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "MIA @ BOS",
+      "home_team": "BOS",
+      "away_team": "MIA",
+      "game_time": "2026-04-01T23:30Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "MEM @ NY",
+      "home_team": "NY",
+      "away_team": "MEM",
+      "game_time": "2026-04-02T00:00Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "TOR @ SAC",
+      "home_team": "SAC",
+      "away_team": "TOR",
+      "game_time": "2026-04-02T00:00Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "CHI @ IND",
+      "home_team": "IND",
+      "away_team": "CHI",
+      "game_time": "2026-04-02T00:00Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "HOU @ MIL",
+      "home_team": "MIL",
+      "away_team": "HOU",
+      "game_time": "2026-04-02T00:00Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "UTAH @ DEN",
+      "home_team": "DEN",
+      "away_team": "UTAH",
+      "game_time": "2026-04-02T01:00Z",
+      "home_players": {},
+      "away_players": {}
+    },
+    {
+      "game": "GS @ SA",
+      "home_team": "SA",
+      "away_team": "GS",
+      "game_time": "2026-04-02T02:00Z",
+      "home_players": {},
+      "away_players": {}
+    }
+  ]
+}
