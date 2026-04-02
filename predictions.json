@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-02T13:22:45.679968",
+  "generated_at": "2026-04-02T17:42:34.156418",
   "season": "2025-26",
   "games": [
     {
@@ -310,7 +310,7 @@
           "assists": 2.1,
           "steals": 0.5,
           "blocks": 0.1,
-          "turnovers": 0.5,
+          "turnovers": 0.4,
           "minutes": 18.3,
           "games_analyzed": 15,
           "confidence": 86,
