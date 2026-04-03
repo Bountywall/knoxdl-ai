@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-03T10:48:37.245427",
+  "generated_at": "2026-04-03T17:05:37.872008",
   "season": "2025-26",
   "games": [
     {
@@ -3163,6 +3163,20 @@
           "role_unstable": false,
           "def_factor": 1.027,
           "position": "C"
+        },
+        "Karlo Matkovic": {
+          "points": 6.9,
+          "rebounds": 4.6,
+          "assists": 0.5,
+          "steals": 0.6,
+          "blocks": 0.8,
+          "turnovers": 0.6,
+          "minutes": 17.8,
+          "games_analyzed": 13,
+          "confidence": 83,
+          "role_unstable": false,
+          "def_factor": 1.027,
+          "position": "F"
         },
         "Yves Missi": {
           "points": 5.5,
