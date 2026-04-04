@@ -10,7 +10,7 @@ from urllib3.util.retry import Retry
 
 warnings.filterwarnings('ignore')
 
-print("🏀 KnoxDL NBA Player Props Predictor — ESPN Boxscore Edition v2")
+print("🏀 KnoxDL NBA Player Props Predictor v4 — Form + H2H")
 print("=" * 60)
 
 # ─────────────────────────────────────────────────────────────
@@ -24,7 +24,8 @@ HEADERS = {
     'Referer': 'https://www.espn.com/nba/'
 }
 
-GAMES_BACK = 15  # recent games per team for player logs + def ratings
+GAMES_BACK = 15
+H2H_BACK   = 10
 
 _last_req = [time.time()]
 
@@ -90,8 +91,7 @@ def get_todays_games():
     return result
 
 # ─────────────────────────────────────────────────────────────
-# 2. INJURIES — fetch ESPN injury report
-# Returns set of player display names who are OUT or DOUBTFUL
+# 2. INJURIES
 # ─────────────────────────────────────────────────────────────
 
 _injury_cache = None
@@ -109,7 +109,6 @@ def get_injured_players():
         for team in data.get('injuries', []):
             for injury in team.get('injuries', []):
                 status = injury.get('status', '').lower()
-                # Flag anyone who is out, doubtful, or suspended
                 if any(s in status for s in ['out', 'doubtful', 'suspended', 'inactive']):
                     name = injury.get('athlete', {}).get('displayName', '')
                     if name:
@@ -120,12 +119,13 @@ def get_injured_players():
     return out
 
 # ─────────────────────────────────────────────────────────────
-# 3. RECENT GAME IDs PER TEAM
+# 3. SCHEDULE
 # ─────────────────────────────────────────────────────────────
 
 _schedule_cache = {}
 
-def get_recent_game_ids(team_espn_id, team_abbrev, n=GAMES_BACK):
+def get_team_schedule(team_espn_id, team_abbrev):
+    """Returns list of { id, opponent_id } for completed games, most recent first."""
     if team_abbrev in _schedule_cache:
         return _schedule_cache[team_abbrev]
 
@@ -134,24 +134,35 @@ def get_recent_game_ids(team_espn_id, team_abbrev, n=GAMES_BACK):
         f"https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_espn_id}/schedule"
     )
     if not data:
+        _schedule_cache[team_abbrev] = []
         return []
 
     completed = []
     for event in data.get('events', []):
-        status = event.get('competitions', [{}])[0].get('status', {}).get('type', {}).get('name', '')
-        if status == 'STATUS_FINAL':
-            completed.append(event['id'])
+        comp = event.get('competitions', [{}])[0]
+        if comp.get('status', {}).get('type', {}).get('name', '') != 'STATUS_FINAL':
+            continue
+        opponent_id = None
+        for c in comp.get('competitors', []):
+            if str(c.get('team', {}).get('id', '')) != str(team_espn_id):
+                opponent_id = str(c.get('team', {}).get('id', ''))
+                break
+        completed.append({'id': event['id'], 'opponent_id': opponent_id})
 
-    recent = list(reversed(completed))[:n]
-    print(f"  ✅ {len(recent)} recent games for {team_abbrev}")
-    _schedule_cache[team_abbrev] = recent
-    return recent
+    result = list(reversed(completed))
+    _schedule_cache[team_abbrev] = result
+    print(f"  ✅ {len(result)} completed games for {team_abbrev}")
+    return result
+
+def get_recent_game_ids(team_espn_id, team_abbrev, n=GAMES_BACK):
+    return [g['id'] for g in get_team_schedule(team_espn_id, team_abbrev)[:n]]
+
+def get_h2h_game_ids(team_espn_id, team_abbrev, opponent_espn_id, n=H2H_BACK):
+    schedule = get_team_schedule(team_espn_id, team_abbrev)
+    return [g['id'] for g in schedule if g['opponent_id'] == str(opponent_espn_id)][:n]
 
 # ─────────────────────────────────────────────────────────────
 # 4. PARSE BOXSCORE
-# Returns:
-#   players: { name: { PTS, REB, AST, STL, BLK, TOV, MIN, position } }
-#   team_scores: { team_espn_id: points_scored }
 # ─────────────────────────────────────────────────────────────
 
 _boxscore_cache = {}
@@ -160,7 +171,7 @@ def parse_boxscore(game_id, team_espn_id=None):
     if game_id in _boxscore_cache:
         cached = _boxscore_cache[game_id]
         if team_espn_id:
-            return cached.get('players', {}).get(str(team_espn_id), {}), cached.get('scores', {})
+            return cached['players'].get(str(team_espn_id), {}), cached['scores']
         return cached
 
     data = espn_get(
@@ -168,24 +179,20 @@ def parse_boxscore(game_id, team_espn_id=None):
         params={'event': game_id}
     )
     if not data:
-        return ({}, {}) if team_espn_id else {}
+        return ({}, {}) if team_espn_id else {'players': {}, 'scores': {}}
 
     boxscore = data.get('boxscore', {})
 
-    # ── Extract scores per team (from header.competitions, not boxscore.teams) ──
     scores = {}
     for comp in data.get('header', {}).get('competitions', []):
         for competitor in comp.get('competitors', []):
-            tid   = str(competitor.get('team', {}).get('id', ''))
-            score = competitor.get('score', 0)
+            tid = str(competitor.get('team', {}).get('id', ''))
             try:
-                scores[tid] = float(score)
+                scores[tid] = float(competitor.get('score', 0))
             except:
                 pass
 
-    # ── Extract player stats per team ───────────────────────
-    all_players = {}  # { team_id_str: { player_name: stats } }
-
+    all_players = {}
     for group in boxscore.get('players', []):
         tid = str(group.get('team', {}).get('id', ''))
         all_players[tid] = {}
@@ -194,7 +201,6 @@ def parse_boxscore(game_id, team_espn_id=None):
             labels = stat_group.get('labels', [])
             if not labels:
                 continue
-
             label_map = {lbl: i for i, lbl in enumerate(labels)}
 
             def get_val(stats, key):
@@ -212,10 +218,10 @@ def parse_boxscore(game_id, team_espn_id=None):
             for athlete_data in stat_group.get('athletes', []):
                 if athlete_data.get('didNotPlay'):
                     continue
-                name  = athlete_data.get('athlete', {}).get('displayName', '')
-                pos   = athlete_data.get('athlete', {}).get('position', {})
-                pos   = pos.get('abbreviation', '') if isinstance(pos, dict) else ''
-                stats = athlete_data.get('stats', [])
+                name    = athlete_data.get('athlete', {}).get('displayName', '')
+                pos_obj = athlete_data.get('athlete', {}).get('position', {})
+                pos     = pos_obj.get('abbreviation', '') if isinstance(pos_obj, dict) else ''
+                stats   = athlete_data.get('stats', [])
                 if not stats or not name:
                     continue
                 minutes = get_val(stats, 'MIN')
@@ -233,87 +239,47 @@ def parse_boxscore(game_id, team_espn_id=None):
                     'position': pos,
                 }
 
-    _boxscore_cache[game_id] = {'players': all_players, 'scores': scores}
+    result = {'players': all_players, 'scores': scores}
+    _boxscore_cache[game_id] = result
 
     if team_espn_id:
         return all_players.get(str(team_espn_id), {}), scores
-    return {'players': all_players, 'scores': scores}
+    return result
 
 # ─────────────────────────────────────────────────────────────
-# 5. OPPONENT DEFENSIVE RATING
-# For each team, calculate average points they ALLOW per game
-# over their last GAMES_BACK games — using actual boxscore scores.
-# Returns { team_espn_id: avg_pts_allowed }
+# 5. DEFENSIVE RATINGS
 # ─────────────────────────────────────────────────────────────
 
 _def_ratings = {}
 
 def build_defensive_ratings(all_team_ids):
-    """
-    Pre-fetch all schedules and boxscores to calculate how many
-    points each team allows on average. Uses the same boxscore
-    cache so we don't double-fetch anything.
-    """
-    print("\n🛡️  Building opponent defensive ratings...")
-
+    print("\n🛡️  Building defensive ratings...")
     for team_espn_id, team_abbrev in all_team_ids:
         game_ids = get_recent_game_ids(team_espn_id, team_abbrev)
         pts_allowed = []
-
         for game_id in game_ids:
             _, scores = parse_boxscore(game_id, team_espn_id)
-            # Points allowed = points scored by the OTHER team
             for tid, pts in scores.items():
                 if str(tid) != str(team_espn_id):
                     pts_allowed.append(pts)
                     break
-
         if pts_allowed:
-            avg = float(np.mean(pts_allowed))
-            _def_ratings[str(team_espn_id)] = avg
+            _def_ratings[str(team_espn_id)] = float(np.mean(pts_allowed))
 
-    # Calculate league average for relative scaling
     if _def_ratings:
         league_avg = float(np.mean(list(_def_ratings.values())))
-        print(f"✅ Defensive ratings built — league avg allowed: {league_avg:.1f} PPG")
+        print(f"✅ Defensive ratings built — league avg: {league_avg:.1f} PPG allowed")
         return league_avg
-    return 113.0  # fallback league average
+    return 113.0
 
 def get_defensive_factor(opponent_espn_id, league_avg):
-    """
-    Returns a scalar:
-      > 1.0 = opponent allows more than average (easier matchup)
-      < 1.0 = opponent is stingy (harder matchup)
-    Capped at ±15% to avoid overreaction.
-    """
-    avg_allowed = _def_ratings.get(str(opponent_espn_id))
-    if avg_allowed is None or league_avg == 0:
+    avg = _def_ratings.get(str(opponent_espn_id))
+    if avg is None or league_avg == 0:
         return 1.0
-    factor = avg_allowed / league_avg
-    return float(max(0.85, min(1.15, factor)))
+    return float(max(0.85, min(1.15, avg / league_avg)))
 
 # ─────────────────────────────────────────────────────────────
-# 6. BUILD PLAYER LOGS
-# ─────────────────────────────────────────────────────────────
-
-def build_player_logs(team_espn_id, team_abbrev):
-    game_ids = get_recent_game_ids(team_espn_id, team_abbrev)
-    if not game_ids:
-        return {}
-
-    player_logs = {}
-    print(f"  📊 Building player logs for {team_abbrev} from {len(game_ids)} games...")
-
-    for game_id in game_ids:
-        box, _ = parse_boxscore(game_id, team_espn_id)
-        for player, stats in box.items():
-            player_logs.setdefault(player, []).append(stats)
-
-    print(f"  ✅ {len(player_logs)} players tracked for {team_abbrev}")
-    return player_logs
-
-# ─────────────────────────────────────────────────────────────
-# 7. PREDICTION ENGINE
+# 6. PREDICTION ENGINE
 # ─────────────────────────────────────────────────────────────
 
 def weighted_average(values, decay=0.92):
@@ -324,22 +290,24 @@ def weighted_average(values, decay=0.92):
     weights /= weights.sum()
     return float(np.dot(weights, values))
 
-def predict_player(logs, player_name, opponent_espn_id, league_avg, injured_players):
-    if not logs or len(logs) < 3:
+def make_prediction(logs, opponent_espn_id, league_avg):
+    """
+    Given a list of game log dicts, produce a prediction dict.
+    Returns None if not enough data.
+    """
+    if not logs or len(logs) < 2:
         return None
 
-    # ── Injury check ────────────────────────────────────────
-    is_injured = player_name in injured_players
-    if is_injured:
-        return None  # exclude injured/doubtful players entirely
+    def extr(key):
+        return [g[key] for g in logs]
 
-    pts  = [g['PTS'] for g in logs]
-    reb  = [g['REB'] for g in logs]
-    ast  = [g['AST'] for g in logs]
-    stl  = [g['STL'] for g in logs]
-    blk  = [g['BLK'] for g in logs]
-    tov  = [g['TOV'] for g in logs]
-    mins = [g['MIN'] for g in logs]
+    pts  = extr('PTS')
+    reb  = extr('REB')
+    ast  = extr('AST')
+    stl  = extr('STL')
+    blk  = extr('BLK')
+    tov  = extr('TOV')
+    mins = extr('MIN')
     pos  = logs[0].get('position', '')
 
     min_arr       = np.array(mins)
@@ -347,41 +315,19 @@ def predict_player(logs, player_name, opponent_espn_id, league_avg, injured_play
     min_std       = min_arr.std()
     role_unstable = bool((min_std / max(min_mean, 1)) > 0.40)
 
-    # ── Base weighted averages ───────────────────────────────
-    pts_base = weighted_average(pts)
-    reb_base = weighted_average(reb)
-    ast_base = weighted_average(ast)
-    stl_base = weighted_average(stl)
-    blk_base = weighted_average(blk)
-    tov_base = weighted_average(tov)
-    min_base = weighted_average(mins)
-
-    # ── Opponent defensive factor ────────────────────────────
-    def_factor = get_defensive_factor(opponent_espn_id, league_avg)
-
-    # Apply def_factor only to offensive stats (pts, reb, ast)
-    # STL/BLK/TOV are less affected by opponent offense quality
-    pts_pred = round(pts_base * def_factor, 1)
-    reb_pred = round(reb_base * def_factor, 1)
-    ast_pred = round(ast_base * def_factor, 1)
-    stl_pred = round(stl_base, 1)
-    blk_pred = round(blk_base, 1)
-    tov_pred = round(tov_base, 1)
-    min_pred = round(min_base, 1)
-
-    # ── Confidence ───────────────────────────────────────────
-    games_factor   = min(len(logs) / 12, 1.0)
-    consist_factor = 1.0 - min(min_std / max(min_mean, 1), 0.5)
-    confidence     = int(round((games_factor * 0.5 + consist_factor * 0.5) * 100))
+    def_factor    = get_defensive_factor(opponent_espn_id, league_avg)
+    games_factor  = min(len(logs) / 12, 1.0)
+    consist       = 1.0 - min(min_std / max(min_mean, 1), 0.5)
+    confidence    = int(round((games_factor * 0.5 + consist * 0.5) * 100))
 
     return {
-        'points':         pts_pred,
-        'rebounds':       reb_pred,
-        'assists':        ast_pred,
-        'steals':         stl_pred,
-        'blocks':         blk_pred,
-        'turnovers':      tov_pred,
-        'minutes':        min_pred,
+        'points':         round(weighted_average(pts)  * def_factor, 1),
+        'rebounds':       round(weighted_average(reb)  * def_factor, 1),
+        'assists':        round(weighted_average(ast)  * def_factor, 1),
+        'steals':         round(weighted_average(stl),  1),
+        'blocks':         round(weighted_average(blk),  1),
+        'turnovers':      round(weighted_average(tov),  1),
+        'minutes':        round(weighted_average(mins), 1),
         'games_analyzed': int(len(logs)),
         'confidence':     confidence,
         'role_unstable':  role_unstable,
@@ -389,66 +335,136 @@ def predict_player(logs, player_name, opponent_espn_id, league_avg, injured_play
         'position':       str(pos),
     }
 
+# ─────────────────────────────────────────────────────────────
+# 7. BUILD LOGS + PROCESS TEAM
+# ─────────────────────────────────────────────────────────────
+
+def build_logs_from_ids(game_ids, team_espn_id):
+    """Fetch boxscores for a list of game IDs and return player logs dict."""
+    player_logs = {}
+    for game_id in game_ids:
+        box, _ = parse_boxscore(game_id, team_espn_id)
+        for player, stats in box.items():
+            player_logs.setdefault(player, []).append(stats)
+    return player_logs
+
+def process_team(team_espn_id, team_abbrev, opponent_espn_id, league_avg, injured_players):
+    """
+    Returns two dicts: form_preds, h2h_preds
+    Each is { player_name: prediction_dict }
+    """
+    # General recent form
+    recent_ids = get_recent_game_ids(team_espn_id, team_abbrev)
+    print(f"  📊 {team_abbrev} — recent form: {len(recent_ids)} games")
+    general_logs = build_logs_from_ids(recent_ids, team_espn_id)
+
+    # H2H history vs this specific opponent
+    h2h_ids = get_h2h_game_ids(team_espn_id, team_abbrev, opponent_espn_id)
+    print(f"  🔁 {team_abbrev} — H2H vs opponent: {len(h2h_ids)} games")
+    h2h_logs = build_logs_from_ids(h2h_ids, team_espn_id)
+
+    form_preds = {}
+    h2h_preds  = {}
+
+    all_players = set(general_logs.keys()) | set(h2h_logs.keys())
+
+    for player_name in all_players:
+        if player_name in injured_players:
+            continue
+
+        # Form prediction (need at least 3 games)
+        gen = general_logs.get(player_name, [])
+        if len(gen) >= 3:
+            pred = make_prediction(gen, opponent_espn_id, league_avg)
+            if pred:
+                form_preds[player_name] = pred
+
+        # H2H prediction (need at least 2 games)
+        h2h = h2h_logs.get(player_name, [])
+        if len(h2h) >= 2:
+            pred = make_prediction(h2h, opponent_espn_id, league_avg)
+            if pred:
+                h2h_preds[player_name] = pred
+
+    # Sort both by points descending
+    form_preds = dict(sorted(form_preds.items(), key=lambda x: x[1]['points'], reverse=True))
+    h2h_preds  = dict(sorted(h2h_preds.items(),  key=lambda x: x[1]['points'], reverse=True))
+
+    print(f"  ✅ {len(form_preds)} form predictions, {len(h2h_preds)} h2h predictions")
+    return form_preds, h2h_preds
 
 # ─────────────────────────────────────────────────────────────
-# 8. OVER/UNDER TOTAL PREDICTION
-# Uses each team's avg pts scored + opponent's defensive factor
+# 8. OVER/UNDER — separate form + h2h totals
 # ─────────────────────────────────────────────────────────────
 
 _pts_scored = {}
 
 def build_pts_scored(all_team_ids):
-    """Calculate average points scored per team from their recent boxscores."""
     for team_espn_id, team_abbrev in all_team_ids:
         game_ids = get_recent_game_ids(team_espn_id, team_abbrev)
         pts_list = []
         for game_id in game_ids:
             cached = parse_boxscore(game_id)
-            scores = cached.get('scores', {}) if isinstance(cached, dict) else {}
+            scores = cached.get('scores', {})
             if str(team_espn_id) in scores:
                 pts_list.append(scores[str(team_espn_id)])
         if pts_list:
             _pts_scored[str(team_espn_id)] = float(np.mean(pts_list))
 
-def predict_over_under(home_espn_id, away_espn_id, league_avg):
+def predict_totals(home_espn_id, away_espn_id, home_abbrev, away_abbrev, league_avg):
     """
-    Predicted total = away avg pts scored × home def factor
-                    + home avg pts scored × away def factor
+    Returns two separate totals:
+      form_total: based on each team's recent scoring avg + def factor
+      h2h_total:  based on actual scores from past matchups between these teams
     """
+    # ── Form-based total ─────────────────────────────────────
     away_scored = _pts_scored.get(str(away_espn_id))
     home_scored = _pts_scored.get(str(home_espn_id))
-    if away_scored is None or home_scored is None:
-        return None
 
-    home_def      = get_defensive_factor(home_espn_id, league_avg)
-    away_def      = get_defensive_factor(away_espn_id, league_avg)
-    away_pts_pred = round(away_scored * home_def, 1)
-    home_pts_pred = round(home_scored * away_def, 1)
-    total         = round(away_pts_pred + home_pts_pred, 1)
+    form_result = None
+    if away_scored is not None and home_scored is not None:
+        home_def      = get_defensive_factor(home_espn_id, league_avg)
+        away_def      = get_defensive_factor(away_espn_id, league_avg)
+        away_pts_pred = round(away_scored * home_def, 1)
+        home_pts_pred = round(home_scored * away_def, 1)
+        form_result = {
+            'predicted_total': round(away_pts_pred + home_pts_pred, 1),
+            'away_pts_pred':   away_pts_pred,
+            'home_pts_pred':   home_pts_pred,
+        }
 
-    return {
-        'predicted_total': total,
-        'away_pts_pred':   away_pts_pred,
-        'home_pts_pred':   home_pts_pred,
-    }
+    # ── H2H-based total ──────────────────────────────────────
+    h2h_ids = get_h2h_game_ids(home_espn_id, home_abbrev, away_espn_id)
+    h2h_result = None
 
-# ─────────────────────────────────────────────────────────────
-# 8. PROCESS A TEAM
-# ─────────────────────────────────────────────────────────────
+    if h2h_ids:
+        game_totals    = []
+        home_pts_list  = []
+        away_pts_list  = []
 
-def process_team(team_espn_id, team_abbrev, opponent_espn_id, league_avg, injured_players):
-    player_logs = build_player_logs(team_espn_id, team_abbrev)
-    results = {}
+        for game_id in h2h_ids:
+            cached = parse_boxscore(game_id)
+            scores = cached.get('scores', {})
+            if len(scores) == 2:
+                vals = list(scores.items())
+                # Figure out which score belongs to home vs away
+                for tid, pts in vals:
+                    if str(tid) == str(home_espn_id):
+                        home_pts_list.append(pts)
+                    else:
+                        away_pts_list.append(pts)
+                game_totals.append(sum(scores.values()))
 
-    for player_name, logs in player_logs.items():
-        pred = predict_player(logs, player_name, opponent_espn_id, league_avg, injured_players)
-        if pred:
-            results[player_name] = pred
-            flag = " ⚠️ unstable" if pred['role_unstable'] else ""
-            df   = f" [def×{pred['def_factor']}]" if pred['def_factor'] != 1.0 else ""
-            print(f"    ✅ {player_name}: {pred['points']} PTS | {pred['rebounds']} REB | {pred['assists']} AST [{pred['confidence']}% conf]{flag}{df}")
+        if game_totals:
+            h2h_result = {
+                'predicted_total': round(float(np.mean(game_totals)), 1),
+                'away_pts_pred':   round(float(np.mean(away_pts_list)), 1) if away_pts_list else None,
+                'home_pts_pred':   round(float(np.mean(home_pts_list)), 1) if home_pts_list else None,
+                'h2h_games_used':  int(len(game_totals)),
+            }
+            print(f"  📊 H2H total: {h2h_result['predicted_total']} pts avg over {len(game_totals)} games")
 
-    return dict(sorted(results.items(), key=lambda x: x[1]['points'], reverse=True))
+    return form_result, h2h_result
 
 # ─────────────────────────────────────────────────────────────
 # 9. MAIN
@@ -463,10 +479,8 @@ def main():
             json.dump({'generated_at': datetime.now().isoformat(), 'season': '2025-26', 'games': []}, f, indent=2)
         return
 
-    # Fetch injuries once upfront
     injured_players = get_injured_players()
 
-    # Collect all unique teams playing today
     all_team_ids = []
     seen = set()
     for g in games:
@@ -475,10 +489,7 @@ def main():
                 all_team_ids.append((tid, abbrev))
                 seen.add(tid)
 
-    # Build defensive ratings for all teams (reuses boxscore cache)
     league_avg = build_defensive_ratings(all_team_ids)
-
-    # Build points-scored averages (needed for over/under)
     build_pts_scored(all_team_ids)
 
     all_games_output = []
@@ -494,21 +505,27 @@ def main():
         print(f"🏀 Game {i+1}/{len(games)}: {label}")
         print(f"{'='*60}")
 
-        print(f"\n  👥 {away} (away) vs {home} defense...")
-        away_preds = process_team(away_id, away, home_id, league_avg, injured_players)
+        print(f"\n  👥 {away} (away)...")
+        away_form, away_h2h = process_team(away_id, away, home_id, league_avg, injured_players)
 
-        print(f"\n  👥 {home} (home) vs {away} defense...")
-        home_preds = process_team(home_id, home, away_id, league_avg, injured_players)
+        print(f"\n  👥 {home} (home)...")
+        home_form, home_h2h = process_team(home_id, home, away_id, league_avg, injured_players)
 
-        ou = predict_over_under(home_id, away_id, league_avg) or {}
+        form_total, h2h_total = predict_totals(home_id, away_id, home, away, league_avg)
+
         all_games_output.append({
-            'game':         label,
-            'home_team':    home,
-            'away_team':    away,
-            'game_time':    game.get('time', ''),
-            'home_players': home_preds,
-            'away_players': away_preds,
-            **ou,
+            'game':             label,
+            'home_team':        home,
+            'away_team':        away,
+            'game_time':        game.get('time', ''),
+            # Form-based predictions
+            'form_total':       form_total,
+            'home_form':        home_form,
+            'away_form':        away_form,
+            # H2H-based predictions
+            'h2h_total':        h2h_total,
+            'home_h2h':         home_h2h,
+            'away_h2h':         away_h2h,
         })
 
     output = {
@@ -520,8 +537,12 @@ def main():
     with open('predictions.json', 'w') as f:
         json.dump(output, f, indent=2)
 
-    total = sum(len(g['home_players']) + len(g['away_players']) for g in all_games_output)
-    print(f"\n✅ Done — {len(all_games_output)} games, {total} players → predictions.json")
+    total_form = sum(len(g['home_form']) + len(g['away_form']) for g in all_games_output)
+    total_h2h  = sum(len(g['home_h2h'])  + len(g['away_h2h'])  for g in all_games_output)
+    print(f"\n✅ Done — {len(all_games_output)} games")
+    print(f"   Form predictions: {total_form} players")
+    print(f"   H2H  predictions: {total_h2h} players")
+    print(f"   → predictions.json")
 
 if __name__ == "__main__":
     main()
