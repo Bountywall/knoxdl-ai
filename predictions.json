@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-12T07:41:07.678832",
+  "generated_at": "2026-04-12T15:32:24.227354",
   "season": "2025-26",
   "games": [
     {
@@ -485,20 +485,6 @@
           "def_factor": 0.922,
           "position": "G"
         },
-        "Tyus Jones": {
-          "points": 1.0,
-          "rebounds": 0.6,
-          "assists": 2.6,
-          "steals": 0.0,
-          "blocks": 0.0,
-          "turnovers": 0.3,
-          "minutes": 14.8,
-          "games_analyzed": 3,
-          "confidence": 38,
-          "role_unstable": true,
-          "def_factor": 0.922,
-          "position": "G"
-        },
         "Goga Bitadze": {
           "points": 1.0,
           "rebounds": 4.1,
@@ -512,6 +498,20 @@
           "role_unstable": false,
           "def_factor": 0.922,
           "position": "C"
+        },
+        "Tyus Jones": {
+          "points": 1.0,
+          "rebounds": 0.6,
+          "assists": 2.6,
+          "steals": 0.0,
+          "blocks": 0.0,
+          "turnovers": 0.3,
+          "minutes": 14.8,
+          "games_analyzed": 3,
+          "confidence": 38,
+          "role_unstable": true,
+          "def_factor": 0.922,
+          "position": "G"
         }
       },
       "away_h2h": {
@@ -2607,20 +2607,6 @@
           "def_factor": 0.92,
           "position": "G"
         },
-        "Landry Shamet": {
-          "points": 5.7,
-          "rebounds": 1.7,
-          "assists": 1.0,
-          "steals": 0.9,
-          "blocks": 0.1,
-          "turnovers": 0.5,
-          "minutes": 23.8,
-          "games_analyzed": 10,
-          "confidence": 77,
-          "role_unstable": false,
-          "def_factor": 0.92,
-          "position": "G"
-        },
         "Mohamed Diawara": {
           "points": 3.8,
           "rebounds": 1.1,
@@ -3326,20 +3312,6 @@
           "def_factor": 0.987,
           "position": "F"
         },
-        "Thanasis Antetokounmpo": {
-          "points": 0.9,
-          "rebounds": 0.5,
-          "assists": 0.0,
-          "steals": 0.0,
-          "blocks": 0.0,
-          "turnovers": 0.0,
-          "minutes": 1.5,
-          "games_analyzed": 2,
-          "confidence": 42,
-          "role_unstable": false,
-          "def_factor": 0.987,
-          "position": "F"
-        },
         "Gary Harris": {
           "points": 0.9,
           "rebounds": 1.9,
@@ -3354,7 +3326,21 @@
           "def_factor": 0.987,
           "position": "G"
         },
-        "Andre Jackson Jr.": {
+        "Thanasis Antetokounmpo": {
+          "points": 0.9,
+          "rebounds": 0.5,
+          "assists": 0.0,
+          "steals": 0.0,
+          "blocks": 0.0,
+          "turnovers": 0.0,
+          "minutes": 1.5,
+          "games_analyzed": 2,
+          "confidence": 42,
+          "role_unstable": false,
+          "def_factor": 0.987,
+          "position": "F"
+        },
+        "Amir Coffey": {
           "points": 0.0,
           "rebounds": 0.0,
           "assists": 0.0,
@@ -3368,7 +3354,7 @@
           "def_factor": 0.987,
           "position": "G"
         },
-        "Amir Coffey": {
+        "Andre Jackson Jr.": {
           "points": 0.0,
           "rebounds": 0.0,
           "assists": 0.0,
@@ -3496,20 +3482,6 @@
           "def_factor": 1.03,
           "position": "F"
         },
-        "Andre Drummond": {
-          "points": 4.2,
-          "rebounds": 7.2,
-          "assists": 1.6,
-          "steals": 1.5,
-          "blocks": 0.5,
-          "turnovers": 1.5,
-          "minutes": 20.6,
-          "games_analyzed": 2,
-          "confidence": 52,
-          "role_unstable": false,
-          "def_factor": 1.03,
-          "position": "C"
-        },
         "Dominick Barlow": {
           "points": 4.2,
           "rebounds": 4.8,
@@ -3523,6 +3495,20 @@
           "role_unstable": false,
           "def_factor": 1.03,
           "position": "F"
+        },
+        "Andre Drummond": {
+          "points": 4.2,
+          "rebounds": 7.2,
+          "assists": 1.6,
+          "steals": 1.5,
+          "blocks": 0.5,
+          "turnovers": 1.5,
+          "minutes": 20.6,
+          "games_analyzed": 2,
+          "confidence": 52,
+          "role_unstable": false,
+          "def_factor": 1.03,
+          "position": "C"
         },
         "Trendon Watford": {
           "points": 1.1,
@@ -3635,20 +3621,6 @@
           "def_factor": 0.962,
           "position": "G"
         },
-        "Chaney Johnson": {
-          "points": 8.0,
-          "rebounds": 4.1,
-          "assists": 2.1,
-          "steals": 0.8,
-          "blocks": 0.6,
-          "turnovers": 1.2,
-          "minutes": 19.2,
-          "games_analyzed": 13,
-          "confidence": 84,
-          "role_unstable": false,
-          "def_factor": 0.962,
-          "position": "F"
-        },
         "Trevon Scott": {
           "points": 8.0,
           "rebounds": 5.5,
@@ -3660,6 +3632,20 @@
           "games_analyzed": 5,
           "confidence": 51,
           "role_unstable": true,
+          "def_factor": 0.962,
+          "position": "F"
+        },
+        "Chaney Johnson": {
+          "points": 8.0,
+          "rebounds": 4.1,
+          "assists": 2.1,
+          "steals": 0.8,
+          "blocks": 0.6,
+          "turnovers": 1.2,
+          "minutes": 19.2,
+          "games_analyzed": 13,
+          "confidence": 84,
+          "role_unstable": false,
           "def_factor": 0.962,
           "position": "F"
         },
@@ -4523,20 +4509,6 @@
           "def_factor": 0.954,
           "position": "F"
         },
-        "Adama Bal": {
-          "points": 10.7,
-          "rebounds": 3.1,
-          "assists": 2.4,
-          "steals": 1.1,
-          "blocks": 0.2,
-          "turnovers": 0.8,
-          "minutes": 31.0,
-          "games_analyzed": 8,
-          "confidence": 72,
-          "role_unstable": false,
-          "def_factor": 0.954,
-          "position": "G"
-        },
         "Walter Clayton Jr.": {
           "points": 10.7,
           "rebounds": 2.1,
@@ -4547,6 +4519,20 @@
           "minutes": 24.9,
           "games_analyzed": 13,
           "confidence": 94,
+          "role_unstable": false,
+          "def_factor": 0.954,
+          "position": "G"
+        },
+        "Adama Bal": {
+          "points": 10.7,
+          "rebounds": 3.1,
+          "assists": 2.4,
+          "steals": 1.1,
+          "blocks": 0.2,
+          "turnovers": 0.8,
+          "minutes": 31.0,
+          "games_analyzed": 8,
+          "confidence": 72,
           "role_unstable": false,
           "def_factor": 0.954,
           "position": "G"
@@ -4884,20 +4870,6 @@
           "def_factor": 0.96,
           "position": "G"
         },
-        "Jordan Hawkins": {
-          "points": 10.6,
-          "rebounds": 2.5,
-          "assists": 1.5,
-          "steals": 0.5,
-          "blocks": 0.2,
-          "turnovers": 1.5,
-          "minutes": 17.4,
-          "games_analyzed": 9,
-          "confidence": 62,
-          "role_unstable": true,
-          "def_factor": 0.96,
-          "position": "G"
-        },
         "Derik Queen": {
           "points": 10.6,
           "rebounds": 6.4,
@@ -4911,6 +4883,20 @@
           "role_unstable": false,
           "def_factor": 0.96,
           "position": "C"
+        },
+        "Jordan Hawkins": {
+          "points": 10.6,
+          "rebounds": 2.5,
+          "assists": 1.5,
+          "steals": 0.5,
+          "blocks": 0.2,
+          "turnovers": 1.5,
+          "minutes": 17.4,
+          "games_analyzed": 9,
+          "confidence": 62,
+          "role_unstable": true,
+          "def_factor": 0.96,
+          "position": "G"
         },
         "Trey Alexander": {
           "points": 5.6,
