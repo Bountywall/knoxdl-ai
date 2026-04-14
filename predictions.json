@@ -1,5 +1,30 @@
 {
-  "generated_at": "2026-04-13T16:04:26.812410",
+  "generated_at": "2026-04-14T15:59:18.538363",
   "season": "2025-26",
-  "games": []
+  "games": [
+    {
+      "game": "CHA @ MIA",
+      "home_team": "MIA",
+      "away_team": "CHA",
+      "game_time": "2026-04-14T23:30Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "PHX @ POR",
+      "home_team": "POR",
+      "away_team": "PHX",
+      "game_time": "2026-04-15T02:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    }
+  ]
 }
