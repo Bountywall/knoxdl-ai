@@ -1,17 +1,13 @@
 {
-  "generated_at": "2026-04-17T15:46:51.364821",
+  "generated_at": "2026-04-18T15:27:21.256682",
   "season": "2025-26",
   "games": [
     {
-      "game": "ORL @ CHA",
-      "home_team": "CHA",
-      "away_team": "ORL",
-      "game_time": "2026-04-17T23:30Z",
-      "form_total": {
-        "predicted_total": 221.8,
-        "away_pts_pred": 104.0,
-        "home_pts_pred": 117.8
-      },
+      "game": "CLE @ TOR",
+      "home_team": "TOR",
+      "away_team": "CLE",
+      "game_time": "2026-04-18T17:00Z",
+      "form_total": null,
       "home_form": {},
       "away_form": {},
       "h2h_total": null,
@@ -19,15 +15,35 @@
       "away_h2h": {}
     },
     {
-      "game": "PHX @ GS",
-      "home_team": "GS",
-      "away_team": "PHX",
-      "game_time": "2026-04-18T02:00Z",
-      "form_total": {
-        "predicted_total": 235.5,
-        "away_pts_pred": 113.3,
-        "home_pts_pred": 122.2
-      },
+      "game": "DEN @ MIN",
+      "home_team": "MIN",
+      "away_team": "DEN",
+      "game_time": "2026-04-18T19:30Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "NY @ ATL",
+      "home_team": "ATL",
+      "away_team": "NY",
+      "game_time": "2026-04-18T22:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "LAL @ HOU",
+      "home_team": "HOU",
+      "away_team": "LAL",
+      "game_time": "2026-04-19T00:30Z",
+      "form_total": null,
       "home_form": {},
       "away_form": {},
       "h2h_total": null,
