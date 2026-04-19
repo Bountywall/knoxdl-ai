@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-04-18T15:27:21.256682",
+  "generated_at": "2026-04-19T15:27:28.720894",
   "season": "2025-26",
   "games": [
     {
-      "game": "CLE @ TOR",
-      "home_team": "TOR",
-      "away_team": "CLE",
-      "game_time": "2026-04-18T17:00Z",
+      "game": "BOS @ PHI",
+      "home_team": "PHI",
+      "away_team": "BOS",
+      "game_time": "2026-04-19T17:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -15,10 +15,10 @@
       "away_h2h": {}
     },
     {
-      "game": "DEN @ MIN",
-      "home_team": "MIN",
-      "away_team": "DEN",
-      "game_time": "2026-04-18T19:30Z",
+      "game": "OKC @ PHX",
+      "home_team": "PHX",
+      "away_team": "OKC",
+      "game_time": "2026-04-19T19:30Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -27,10 +27,10 @@
       "away_h2h": {}
     },
     {
-      "game": "NY @ ATL",
-      "home_team": "ATL",
-      "away_team": "NY",
-      "game_time": "2026-04-18T22:00Z",
+      "game": "DET @ ORL",
+      "home_team": "ORL",
+      "away_team": "DET",
+      "game_time": "2026-04-19T22:30Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -39,10 +39,10 @@
       "away_h2h": {}
     },
     {
-      "game": "LAL @ HOU",
-      "home_team": "HOU",
-      "away_team": "LAL",
-      "game_time": "2026-04-19T00:30Z",
+      "game": "SA @ POR",
+      "home_team": "POR",
+      "away_team": "SA",
+      "game_time": "2026-04-20T01:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
