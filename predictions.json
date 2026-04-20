@@ -1,52 +1,67 @@
 {
-  "generated_at": "2026-04-19T15:27:28.720894",
+  "generated_at": "2026-04-20T16:01:23.922099",
   "season": "2025-26",
   "games": [
     {
-      "game": "BOS @ PHI",
-      "home_team": "PHI",
-      "away_team": "BOS",
-      "game_time": "2026-04-19T17:00Z",
-      "form_total": null,
+      "game": "CLE @ TOR",
+      "home_team": "TOR",
+      "away_team": "CLE",
+      "game_time": "2026-04-20T23:00Z",
+      "form_total": {
+        "predicted_total": 254.6,
+        "away_pts_pred": 141.1,
+        "home_pts_pred": 113.5
+      },
       "home_form": {},
       "away_form": {},
-      "h2h_total": null,
+      "h2h_total": {
+        "predicted_total": 239.0,
+        "away_pts_pred": 126.0,
+        "home_pts_pred": 113.0,
+        "h2h_games_used": 1
+      },
       "home_h2h": {},
       "away_h2h": {}
     },
     {
-      "game": "OKC @ PHX",
-      "home_team": "PHX",
-      "away_team": "OKC",
-      "game_time": "2026-04-19T19:30Z",
-      "form_total": null,
+      "game": "NY @ ATL",
+      "home_team": "ATL",
+      "away_team": "NY",
+      "game_time": "2026-04-21T00:00Z",
+      "form_total": {
+        "predicted_total": 206.0,
+        "away_pts_pred": 113.5,
+        "home_pts_pred": 92.5
+      },
       "home_form": {},
       "away_form": {},
-      "h2h_total": null,
+      "h2h_total": {
+        "predicted_total": 215.0,
+        "away_pts_pred": 113.0,
+        "home_pts_pred": 102.0,
+        "h2h_games_used": 1
+      },
       "home_h2h": {},
       "away_h2h": {}
     },
     {
-      "game": "DET @ ORL",
-      "home_team": "ORL",
-      "away_team": "DET",
-      "game_time": "2026-04-19T22:30Z",
-      "form_total": null,
+      "game": "DEN @ MIN",
+      "home_team": "MIN",
+      "away_team": "DEN",
+      "game_time": "2026-04-21T02:30Z",
+      "form_total": {
+        "predicted_total": 217.6,
+        "away_pts_pred": 119.6,
+        "home_pts_pred": 98.0
+      },
       "home_form": {},
       "away_form": {},
-      "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "SA @ POR",
-      "home_team": "POR",
-      "away_team": "SA",
-      "game_time": "2026-04-20T01:00Z",
-      "form_total": null,
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": null,
+      "h2h_total": {
+        "predicted_total": 221.0,
+        "away_pts_pred": 116.0,
+        "home_pts_pred": 105.0,
+        "h2h_games_used": 1
+      },
       "home_h2h": {},
       "away_h2h": {}
     }
