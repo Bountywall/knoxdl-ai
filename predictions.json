@@ -1,65 +1,44 @@
 {
-  "generated_at": "2026-04-21T16:02:11.195533",
+  "generated_at": "2026-04-22T16:00:19.116600",
   "season": "2025-26",
   "games": [
     {
-      "game": "BOS @ PHI",
-      "home_team": "PHI",
-      "away_team": "BOS",
-      "game_time": "2026-04-21T23:00Z",
+      "game": "DET @ ORL",
+      "home_team": "ORL",
+      "away_team": "DET",
+      "game_time": "2026-04-22T23:00Z",
       "form_total": {
-        "predicted_total": 220.5,
-        "away_pts_pred": 141.4,
-        "home_pts_pred": 79.1
+        "predicted_total": 218.7,
+        "away_pts_pred": 98.1,
+        "home_pts_pred": 120.6
       },
       "home_form": {},
       "away_form": {},
       "h2h_total": {
-        "predicted_total": 214.0,
-        "away_pts_pred": 123.0,
-        "home_pts_pred": 91.0,
+        "predicted_total": 213.0,
+        "away_pts_pred": 101.0,
+        "home_pts_pred": 112.0,
         "h2h_games_used": 1
       },
       "home_h2h": {},
       "away_h2h": {}
     },
     {
-      "game": "SA @ POR",
-      "home_team": "POR",
-      "away_team": "SA",
-      "game_time": "2026-04-22T00:00Z",
+      "game": "OKC @ PHX",
+      "home_team": "PHX",
+      "away_team": "OKC",
+      "game_time": "2026-04-23T01:30Z",
       "form_total": {
-        "predicted_total": 209.5,
-        "away_pts_pred": 117.7,
-        "home_pts_pred": 91.8
+        "predicted_total": 207.6,
+        "away_pts_pred": 136.2,
+        "home_pts_pred": 71.4
       },
       "home_form": {},
       "away_form": {},
       "h2h_total": {
-        "predicted_total": 209.0,
-        "away_pts_pred": 111.0,
-        "home_pts_pred": 98.0,
-        "h2h_games_used": 1
-      },
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "LAL @ HOU",
-      "home_team": "HOU",
-      "away_team": "LAL",
-      "game_time": "2026-04-22T02:30Z",
-      "form_total": {
-        "predicted_total": 201.2,
-        "away_pts_pred": 109.4,
-        "home_pts_pred": 91.8
-      },
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": {
-        "predicted_total": 205.0,
-        "away_pts_pred": 107.0,
-        "home_pts_pred": 98.0,
+        "predicted_total": 203.0,
+        "away_pts_pred": 119.0,
+        "home_pts_pred": 84.0,
         "h2h_games_used": 1
       },
       "home_h2h": {},
