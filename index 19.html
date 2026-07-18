@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KnoxDL AI — Tennis Match Predictions</title>
+  <meta name="description" content="Daily tennis match predictions powered by AI. Win probability, H2H history and form analysis for ATP & WTA." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.19825 3.29918C5.80046 2 7.86697 2 12 2C16.133 2 18.1995 2 18.8017 3.29918C18.8535 3.41086 18.8972 3.52686 18.9323 3.6461C19.3414 5.0333 17.8802 6.64111 14.9577 9.85674L13 12L14.9577 14.1433C17.8802 17.3589 19.3414 18.9667 18.9323 20.3539C18.8972 20.4731 18.8535 20.5891 18.8017 20.7008C18.1995 22 16.133 22 12 22C7.86697 22 5.80046 22 5.19825 20.7008C5.14649 20.5891 5.10282 20.4731 5.06765 20.3539C4.65857 18.9667 6.11981 17.3589 9.0423 14.1433L11 12L9.0423 9.85674C6.11981 6.64111 4.65857 5.0333 5.06765 3.6461C5.10282 3.52686 5.14649 3.41086 5.19825 3.29918Z' fill='%2342ffb5'/%3E%3C/svg%3E" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:            #0a0e0c;
+      --bg-surface:    #111714;
+      --bg-card:       #141a17;
+      --bg-card-hover: #1a2320;
+      --border:        rgba(66,255,181,0.1);
+      --border-strong: rgba(66,255,181,0.2);
+      --accent:        #42ffb5;
+      --accent-dim:    rgba(66,255,181,0.12);
+      --gold:          #f5c26b;
+      --gold-dim:      rgba(245,194,107,0.08);
+      --gold-border:   rgba(245,194,107,0.25);
+      --text-primary:  #e8f5f0;
+      --text-secondary:#7a9e8e;
+      --text-muted:    #4a6357;
+      --font-display:  'Space Grotesk', sans-serif;
+      --font-body:     'DM Sans', sans-serif;
+      --radius:        12px;
+      --radius-sm:     8px;
+      --max-w:         1100px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text-primary);
+      font-family: var(--font-body); font-size: 16px;
+      line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,14,12,0.88); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max-w); margin: 0 auto; padding: 0 24px;
+      height: 62px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .brand-logo { width: 26px; height: 26px; }
+    .brand-name { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.3px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── HERO ── */
+    .hero { padding: 60px 0 40px; text-align: center; position: relative; overflow: hidden; }
+    .hero-glow {
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(66,255,181,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-title { font-family: var(--font-display); font-size: clamp(28px,4vw,48px); font-weight: 700; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 14px; }
+    .hero-title .accent { color: var(--accent); }
+    .hero-sub { color: var(--text-secondary); font-size: 16px; max-width: 500px; margin: 0 auto 16px; }
+    .generated-at { color: var(--text-muted); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .generated-at span { color: var(--accent); }
+
+    /* ── PREDICTIONS AREA ── */
+    .predictions-area { position: relative; min-height: 520px; padding: 0 0 80px; }
+
+    /* ── INLINE LOADER ── */
+    .area-loader {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 24px;
+      background: var(--bg); border-radius: var(--radius); z-index: 10;
+      transition: opacity 0.4s ease, visibility 0.4s ease; min-height: 400px;
+    }
+    .area-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-logo-wrap { position: relative; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; }
+    .loader-halo { position: absolute; inset: -8px; border-radius: 4px; background: transparent; animation: halo-pulse 2s ease-in-out infinite; }
+    @keyframes halo-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(66,255,181,0.35); }
+      50%  { box-shadow: 0 0 28px 8px rgba(66,255,181,0.12); }
+      100% { box-shadow: 0 0 0 0 rgba(66,255,181,0.35); }
+    }
+    .loader-logo { width: 48px; height: 48px; position: relative; z-index: 1; animation: logo-breathe 2s ease-in-out infinite; }
+    @keyframes logo-breathe {
+      0%   { transform: scale(1);    filter: drop-shadow(0 0 6px rgba(66,255,181,0.5)); }
+      50%  { transform: scale(1.12); filter: drop-shadow(0 0 16px rgba(66,255,181,0.8)); }
+      100% { transform: scale(1);    filter: drop-shadow(0 0 6px rgba(66,255,181,0.5)); }
+    }
+    .loader-label { font-family: var(--font-display); font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+    .loader-bar { width: 120px; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .loader-bar-fill { height: 100%; width: 40%; background: var(--accent); border-radius: 2px; animation: bar-slide 1.6s ease-in-out infinite; }
+    @keyframes bar-slide {
+      0%   { transform: translateX(-100%); opacity: 0.8; }
+      50%  { opacity: 1; }
+      100% { transform: translateX(350%); opacity: 0.8; }
+    }
+
+    .games-wrapper { opacity: 0; transform: translateY(10px); transition: opacity 0.45s ease, transform 0.45s ease; }
+    .games-wrapper.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── MATCH TABS ── */
+    .game-tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 20px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .game-tab {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-secondary);
+      font-family: var(--font-display); font-size: 13px; font-weight: 500;
+      padding: 8px 16px; cursor: pointer; transition: all 0.2s; text-align: left;
+    }
+    .game-tab .tab-league { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+    .game-tab:hover { border-color: var(--border-strong); color: var(--text-primary); }
+    .game-tab.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+    .game-tab.active .tab-league { color: rgba(66,255,181,0.6); }
+
+    .game-panel { display: none; }
+    .game-panel.active { display: block; }
+
+    /* ── MODE SWITCHER (Form vs H2H) ── */
+    .mode-switcher {
+      display: flex; gap: 4px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      width: fit-content;
+      margin-bottom: 20px;
+    }
+    .mode-btn {
+      font-family: var(--font-display); font-size: 13px; font-weight: 500;
+      padding: 7px 18px; border-radius: 6px; border: none;
+      cursor: pointer; transition: all 0.2s; color: var(--text-muted);
+      background: transparent;
+    }
+    .mode-btn:hover { color: var(--text-secondary); }
+    .mode-btn.active { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-strong); }
+    .mode-btn.active.form { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+    .mode-btn.active.h2h  { color: var(--gold); border-color: var(--gold-border); background: var(--gold-dim); }
+
+    .mode-view { display: none; }
+    .mode-view.active { display: block; }
+
+    /* ── TOURNAMENT HEADER ── */
+    .tournament-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .tournament-name {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .surface-badge {
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 3px 10px; border-radius: 4px;
+    }
+    .surface-badge.clay  { background: rgba(200,120,60,0.15);  color: #e08050; border: 1px solid rgba(200,120,60,0.3); }
+    .surface-badge.grass { background: rgba(66,200,100,0.12);  color: #5cb87a; border: 1px solid rgba(66,200,100,0.25); }
+    .surface-badge.hard  { background: rgba(80,140,220,0.12);  color: #6fa4e0; border: 1px solid rgba(80,140,220,0.25); }
+    .surface-badge.indoor{ background: rgba(160,100,220,0.12); color: #b080dc; border: 1px solid rgba(160,100,220,0.25); }
+    .surface-badge.unknown { background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border); }
+    .league-badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+      padding: 3px 10px; border-radius: 4px;
+      background: var(--accent-dim); color: var(--accent); border: 1px solid var(--border-strong);
+    }
+
+    /* ── WIN PROBABILITY BAR ── */
+    .prob-container {
+      background: var(--bg-card); border: 1px solid var(--border-strong);
+      border-radius: var(--radius); padding: 20px 24px; margin-bottom: 16px;
+    }
+    .prob-container.h2h-style { border-color: var(--gold-border); background: var(--gold-dim); }
+    .prob-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px;
+    }
+    .prob-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .prob-score-hint { font-size: 12px; color: var(--text-muted); }
+    .prob-players {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 10px;
+    }
+    .prob-player { flex: 1; }
+    .prob-player.p2 { text-align: right; }
+    .prob-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .prob-pct {
+      font-family: var(--font-display); font-size: 28px; font-weight: 700;
+      color: var(--accent); line-height: 1;
+    }
+    .prob-pct.p2 { color: var(--text-secondary); }
+    .prob-pct.h2h { color: var(--gold); }
+    .prob-pct.h2h.p2 { color: var(--text-muted); }
+    .prob-rank { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .prob-bar-wrap {
+      height: 8px; background: var(--bg-surface); border-radius: 4px; overflow: hidden;
+      position: relative;
+    }
+    .prob-bar-fill {
+      height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+      background: linear-gradient(90deg, var(--accent), rgba(66,255,181,0.6));
+    }
+    .prob-bar-fill.h2h { background: linear-gradient(90deg, var(--gold), rgba(245,194,107,0.5)); }
+
+    /* ── STAT PILLS ROW ── */
+    .stats-row {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;
+    }
+    .stat-pill {
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 5px 10px; font-size: 12px;
+      color: var(--text-secondary); display: flex; align-items: center; gap: 5px;
+    }
+    .stat-pill strong { color: var(--text-primary); font-weight: 600; }
+    .stat-pill.accent-pill { border-color: var(--border-strong); }
+    .stat-pill.accent-pill strong { color: var(--accent); }
+
+    /* ── PLAYERS SIDE BY SIDE ── */
+    .players-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;
+    }
+    .player-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px;
+      transition: border-color 0.2s;
+    }
+    .player-card.winner-hint { border-color: var(--border-strong); }
+    .player-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .player-card-name { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text-primary); }
+    .player-card-rank {
+      font-family: var(--font-display); font-size: 12px; font-weight: 600;
+      color: var(--text-muted); background: var(--bg-surface);
+      border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px;
+    }
+    .player-card-rank.top10 { color: var(--accent); border-color: var(--border-strong); }
+    .player-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .player-stat-cell { background: var(--bg-surface); border-radius: 6px; padding: 8px 10px; }
+    .player-stat-val { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1; }
+    .player-stat-val.green { color: var(--accent); }
+    .player-stat-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 3px; }
+    .player-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .player-meta-tag { font-size: 11px; color: var(--text-muted); background: var(--bg-surface); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+
+    /* ── H2H RECORD DISPLAY ── */
+    .h2h-record {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; padding: 16px 0; margin-bottom: 16px;
+    }
+    .h2h-record-name { font-family: var(--font-display); font-size: 13px; color: var(--text-secondary); text-align: center; }
+    .h2h-record-wins { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
+    .h2h-record-wins.p1 { color: var(--gold); }
+    .h2h-record-wins.p2 { color: var(--text-secondary); }
+    .h2h-record-sep { font-size: 20px; color: var(--text-muted); }
+    .h2h-matches-note { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+    /* ── NO H2H ── */
+    .no-h2h {
+      text-align: center; padding: 48px 24px;
+      color: var(--text-muted); font-size: 14px;
+      border: 1px dashed var(--border); border-radius: var(--radius);
+    }
+    .no-h2h strong { display: block; color: var(--text-secondary); font-size: 15px; margin-bottom: 6px; }
+
+    /* ── NO GAMES ── */
+    .no-games { text-align: center; padding: 80px 24px; color: var(--text-secondary); font-size: 15px; }
+    .no-games h2 { font-family: var(--font-display); font-size: 22px; color: var(--text-primary); margin-bottom: 10px; }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--bg-surface); border-top: 1px solid var(--border); padding: 32px 0; text-align: center; }
+    .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 12px; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-legal { color: var(--text-muted); font-size: 12px; }
+
+    @media (max-width: 680px) {
+      .players-grid { grid-template-columns: 1fr; }
+      .nav-links    { display: none; }
+      .prob-pct     { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="https://knoxdl.com" class="brand">
+        <svg viewBox="0 0 24 24" fill="none" class="brand-logo">
+          <path d="M5.19825 3.29918C5.80046 2 7.86697 2 12 2C16.133 2 18.1995 2 18.8017 3.29918C18.8535 3.41086 18.8972 3.52686 18.9323 3.6461C19.3414 5.0333 17.8802 6.64111 14.9577 9.85674L13 12L14.9577 14.1433C17.8802 17.3589 19.3414 18.9667 18.9323 20.3539C18.8972 20.4731 18.8535 20.5891 18.8017 20.7008C18.1995 22 16.133 22 12 22C7.86697 22 5.80046 22 5.19825 20.7008C5.14649 20.5891 5.10282 20.4731 5.06765 20.3539C4.65857 18.9667 6.11981 17.3589 9.0423 14.1433L11 12L9.0423 9.85674C6.11981 6.64111 4.65857 5.0333 5.06765 3.6461C5.10282 3.52686 5.14649 3.41086 5.19825 3.29918Z" fill="#42ffb5"/>
+        </svg>
+        <span class="brand-name">KnoxDL</span>
+      </a>
+      <div class="nav-links">
+        <a href="https://knoxdl.com">Downloader</a>
+        <a href="/" class="active">AI Predictions</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <h1 class="hero-title">Today's <span class="accent">Tennis</span> Predictions</h1>
+      <p class="hero-sub">AI-powered match predictions for ATP & WTA — win probability, form analysis and H2H history.</p>
+      <p class="generated-at" id="generatedAt"></p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="predictions-area">
+      <div class="area-loader" id="areaLoader">
+        <div class="loader-logo-wrap">
+          <div class="loader-halo"></div>
+          <svg class="loader-logo" viewBox="0 0 24 24" fill="none">
+            <path d="M5.19825 3.29918C5.80046 2 7.86697 2 12 2C16.133 2 18.1995 2 18.8017 3.29918C18.8535 3.41086 18.8972 3.52686 18.9323 3.6461C19.3414 5.0333 17.8802 6.64111 14.9577 9.85674L13 12L14.9577 14.1433C17.8802 17.3589 19.3414 18.9667 18.9323 20.3539C18.8972 20.4731 18.8535 20.5891 18.8017 20.7008C18.1995 22 16.133 22 12 22C7.86697 22 5.80046 22 5.19825 20.7008C5.14649 20.5891 5.10282 20.4731 5.06765 20.3539C4.65857 18.9667 6.11981 17.3589 9.0423 14.1433L11 12L9.0423 9.85674C6.11981 6.64111 4.65857 5.0333 5.06765 3.6461C5.10282 3.52686 5.14649 3.41086 5.19825 3.29918Z" fill="#42ffb5"/>
+          </svg>
+        </div>
+        <span class="loader-label">Loading predictions</span>
+        <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      </div>
+
+      <div class="games-wrapper" id="gamesWrapper">
+        <div class="game-tabs" id="gameTabs"></div>
+        <div id="gamePanels"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://knoxdl.com">KnoxDL</a>
+        <a href="https://knoxdl.com/privacy.html">Privacy</a>
+        <a href="https://knoxdl.com/terms.html">Terms</a>
+      </div>
+      <p class="footer-legal">© <span id="year"></span> KnoxDL · Predictions are for informational purposes only.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── CHANGE THIS to your raw GitHub URL ──
+    const PREDICTIONS_URL = 'https://raw.githubusercontent.com/Bountywall/knoxdl-ai/main/predictions.json';
+
+    function formatTime(iso) {
+      if (!iso) return '';
+      try {
+        return new Date(iso).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit', timeZoneName:'short' });
+      } catch { return ''; }
+    }
+
+    function hideLoader() {
+      document.getElementById('areaLoader').classList.add('hidden');
+      document.getElementById('gamesWrapper').classList.add('visible');
+    }
+
+    function pct(prob) { return Math.round((prob || 0) * 100); }
+
+    function surfaceClass(s) {
+      if (!s) return 'unknown';
+      const sl = s.toLowerCase();
+      if (sl.includes('clay'))   return 'clay';
+      if (sl.includes('grass'))  return 'grass';
+      if (sl.includes('hard'))   return 'hard';
+      if (sl.includes('indoor')) return 'indoor';
+      return 'unknown';
+    }
+
+    function surfaceLabel(s) {
+      if (!s) return 'Unknown surface';
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    function rankLabel(r) {
+      if (!r || r >= 999) return 'Unranked';
+      return `#${r}`;
+    }
+
+    function winLoss(w, l) {
+      const total = w + l;
+      if (!total) return '—';
+      return `${w}W-${l}L`;
+    }
+
+    function renderFormView(match) {
+      const f  = match.prediction.form;
+      const p1 = match.player1;
+      const p2 = match.player2;
+      const p1pct = pct(f.p1_win_prob);
+      const p2pct = pct(f.p2_win_prob);
+
+      const surfRow = (f.p1_surface_wr !== null && f.p1_surface_wr !== undefined)
+        ? `<div class="stat-pill accent-pill"><strong>${Math.round(f.p1_surface_wr*100)}%</strong> ${surfaceLabel(f.surface)} wr (p1)</div>
+           <div class="stat-pill"><strong>${Math.round(f.p2_surface_wr*100)}%</strong> ${surfaceLabel(f.surface)} wr (p2)</div>`
+        : '';
+
+      return `
+        <div class="prob-container">
+          <div class="prob-header">
+            <span class="prob-label">Win Probability — Recent Form</span>
+            <span class="prob-score-hint">Predicted: ${match.prediction.predicted_score}</span>
+          </div>
+          <div class="prob-players">
+            <div class="prob-player p1">
+              <div class="prob-name">${p1.name}</div>
+              <div class="prob-pct">${p1pct}%</div>
+              <div class="prob-rank">${rankLabel(p1.rank)}</div>
+            </div>
+            <div class="prob-player p2">
+              <div class="prob-name">${p2.name}</div>
+              <div class="prob-pct p2">${p2pct}%</div>
+              <div class="prob-rank">${rankLabel(p2.rank)}</div>
+            </div>
+          </div>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar-fill" style="width:${p1pct}%"></div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-pill accent-pill"><strong>${Math.round(f.p1_form_wr*100)}%</strong> form wr (p1)</div>
+            <div class="stat-pill"><strong>${Math.round(f.p2_form_wr*100)}%</strong> form wr (p2)</div>
+            ${surfRow}
+            <div class="stat-pill"><strong>${f.p1_matches_analyzed}</strong> matches analyzed (p1)</div>
+            <div class="stat-pill"><strong>${f.p2_matches_analyzed}</strong> matches analyzed (p2)</div>
+            <div class="stat-pill" style="margin-left:auto"><strong>${match.prediction.confidence}%</strong> confidence</div>
+          </div>
+        </div>
+
+        <div class="players-grid">
+          ${renderPlayerCard(p1, p1pct >= 50)}
+          ${renderPlayerCard(p2, p2pct > p1pct)}
+        </div>`;
+    }
+
+    function renderH2hView(match) {
+      const h = match.prediction.h2h;
+      const p1 = match.player1;
+      const p2 = match.player2;
+
+      if (!h || h.h2h_matches === 0) {
+        return `<div class="no-h2h"><strong>No head-to-head history found</strong>These players may not have faced each other in ESPN's records yet.</div>`;
+      }
+
+      const p1pct = pct(h.p1_win_prob);
+      const p2pct = pct(h.p2_win_prob);
+
+      return `
+        <div class="h2h-record">
+          <div>
+            <div class="h2h-record-wins p1">${h.p1_h2h_wins}</div>
+            <div class="h2h-record-name">${p1.name.split(' ').pop()}</div>
+          </div>
+          <div class="h2h-record-sep">—</div>
+          <div>
+            <div class="h2h-record-wins p2">${h.p2_h2h_wins}</div>
+            <div class="h2h-record-name">${p2.name.split(' ').pop()}</div>
+          </div>
+        </div>
+        <div class="h2h-matches-note">${h.h2h_matches} head-to-head match${h.h2h_matches > 1 ? 'es' : ''} on record</div>
+
+        <div class="prob-container h2h-style" style="margin-top:16px">
+          <div class="prob-header">
+            <span class="prob-label" style="color:var(--gold)">Win Probability — H2H History</span>
+          </div>
+          <div class="prob-players">
+            <div class="prob-player p1">
+              <div class="prob-name">${p1.name}</div>
+              <div class="prob-pct h2h">${p1pct}%</div>
+            </div>
+            <div class="prob-player p2">
+              <div class="prob-name">${p2.name}</div>
+              <div class="prob-pct h2h p2">${p2pct}%</div>
+            </div>
+          </div>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar-fill h2h" style="width:${p1pct}%"></div>
+          </div>
+        </div>`;
+    }
+
+    function renderPlayerCard(p, isLeading) {
+      const rankCls = p.rank && p.rank <= 10 ? 'top10' : '';
+      const wl      = winLoss(p.season_wins || 0, p.season_losses || 0);
+      const wr      = (p.season_wins || 0) + (p.season_losses || 0) > 0
+        ? Math.round(p.season_wins / (p.season_wins + p.season_losses) * 100) + '%'
+        : '—';
+
+      const metaTags = [
+        p.country ? `<span class="player-meta-tag">${p.country}</span>` : '',
+        p.hand    ? `<span class="player-meta-tag">${p.hand}-handed</span>` : '',
+        p.titles  ? `<span class="player-meta-tag">${p.titles} title${p.titles > 1 ? 's' : ''} this season</span>` : '',
+        p.seed    ? `<span class="player-meta-tag">Seed ${p.seed}</span>` : '',
+      ].filter(Boolean).join('');
+
+      return `
+        <div class="player-card ${isLeading ? 'winner-hint' : ''}">
+          <div class="player-card-header">
+            <span class="player-card-name">${p.name}</span>
+            <span class="player-card-rank ${rankCls}">${rankLabel(p.rank)}</span>
+          </div>
+          <div class="player-stat-grid">
+            <div class="player-stat-cell">
+              <div class="player-stat-val green">${p.season_wins || 0}</div>
+              <div class="player-stat-lbl">Season Wins</div>
+            </div>
+            <div class="player-stat-cell">
+              <div class="player-stat-val">${p.season_losses || 0}</div>
+              <div class="player-stat-lbl">Season Losses</div>
+            </div>
+            <div class="player-stat-cell">
+              <div class="player-stat-val">${wr}</div>
+              <div class="player-stat-lbl">Win Rate</div>
+            </div>
+            <div class="player-stat-cell">
+              <div class="player-stat-val">${wl}</div>
+              <div class="player-stat-lbl">Record</div>
+            </div>
+          </div>
+          ${metaTags ? `<div class="player-meta">${metaTags}</div>` : ''}
+        </div>`;
+    }
+
+    function renderNoGames(msg) {
+      document.getElementById('gamePanels').innerHTML = `
+        <div class="no-games"><h2>No matches today</h2>
+        <p>${msg || 'Check back tomorrow for the next predictions.'}</p></div>`;
+    }
+
+    async function loadPredictions() {
+      try {
+        const res  = await fetch(PREDICTIONS_URL + '?t=' + Date.now());
+        const data = await res.json();
+
+        if (data.generated_at) {
+          document.getElementById('generatedAt').innerHTML =
+            `Last updated: <span>${formatTime(data.generated_at)}</span>`;
+        }
+
+        const matches = data.matches || [];
+        if (matches.length === 0) {
+          renderNoGames();
+          hideLoader();
+          return;
+        }
+
+        const tabsEl   = document.getElementById('gameTabs');
+        const panelsEl = document.getElementById('gamePanels');
+
+        matches.forEach((match, idx) => {
+          // Tab
+          const tab = document.createElement('button');
+          tab.className = 'game-tab' + (idx === 0 ? ' active' : '');
+          tab.innerHTML = `
+            <span class="tab-league">${match.league || 'ATP'}</span>
+            ${match.match}`;
+          tab.addEventListener('click', () => {
+            document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(`panel-${idx}`).classList.add('active');
+          });
+          tabsEl.appendChild(tab);
+
+          // Panel
+          const panel = document.createElement('div');
+          panel.className = 'game-panel' + (idx === 0 ? ' active' : '');
+          panel.id = `panel-${idx}`;
+
+          const surf    = match.surface || '';
+          const surfCls = surfaceClass(surf);
+
+          panel.innerHTML = `
+            <div class="tournament-header">
+              <span class="tournament-name">${match.tournament || ''}</span>
+              <span class="surface-badge ${surfCls}">${surfaceLabel(surf)}</span>
+              <span class="league-badge">${match.league || 'ATP'}</span>
+            </div>
+            <div class="mode-switcher">
+              <button class="mode-btn form active" data-mode="form" data-panel="${idx}">Recent Form</button>
+              <button class="mode-btn h2h" data-mode="h2h" data-panel="${idx}">H2H History</button>
+            </div>
+            <div class="mode-view active" id="view-form-${idx}">
+              ${renderFormView(match)}
+            </div>
+            <div class="mode-view" id="view-h2h-${idx}">
+              ${renderH2hView(match)}
+            </div>`;
+
+          panelsEl.appendChild(panel);
+        });
+
+        // Mode switcher handlers
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx   = btn.dataset.panel;
+            const mode  = btn.dataset.mode;
+            const panel = document.getElementById(`panel-${idx}`);
+            panel.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            panel.querySelectorAll('.mode-view').forEach(v => v.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`view-${mode}-${idx}`).classList.add('active');
+          });
+        });
+
+        hideLoader();
+
+      } catch (err) {
+        console.error('Failed to load predictions:', err);
+        renderNoGames('Could not load predictions. Please try again later.');
+        hideLoader();
+      }
+    }
+
+    loadPredictions();
+  </script>
+</body>
+</html>
