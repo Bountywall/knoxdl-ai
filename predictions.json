@@ -1,12 +1,24 @@
 {
-  "generated_at": "2026-10-03T18:22:21.315537",
+  "generated_at": "2026-10-04T18:25:46.649204",
   "season": "2025-26",
   "games": [
     {
-      "game": "TOR @ MIA",
-      "home_team": "MIA",
-      "away_team": "TOR",
-      "game_time": "2026-10-03T23:00Z",
+      "game": "DEN @ UTAH",
+      "home_team": "UTAH",
+      "away_team": "DEN",
+      "game_time": "2026-10-04T23:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "LAC @ GS",
+      "home_team": "GS",
+      "away_team": "LAC",
+      "game_time": "2026-10-04T23:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
