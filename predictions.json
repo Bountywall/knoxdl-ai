@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-04T18:25:46.649204",
+  "generated_at": "2026-10-05T21:42:13.970595",
   "season": "2025-26",
   "games": [
     {
-      "game": "DEN @ UTAH",
-      "home_team": "UTAH",
-      "away_team": "DEN",
-      "game_time": "2026-10-04T23:00Z",
+      "game": "ATL @ MEM",
+      "home_team": "MEM",
+      "away_team": "ATL",
+      "game_time": "2026-10-05T23:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -15,10 +15,46 @@
       "away_h2h": {}
     },
     {
-      "game": "LAC @ GS",
-      "home_team": "GS",
-      "away_team": "LAC",
-      "game_time": "2026-10-04T23:00Z",
+      "game": "DET @ PHX",
+      "home_team": "PHX",
+      "away_team": "DET",
+      "game_time": "2026-10-05T23:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "PHI @ NY",
+      "home_team": "NY",
+      "away_team": "PHI",
+      "game_time": "2026-10-05T23:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "MIL @ MIN",
+      "home_team": "MIN",
+      "away_team": "MIL",
+      "game_time": "2026-10-06T00:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "SAC @ LAL",
+      "home_team": "LAL",
+      "away_team": "SAC",
+      "game_time": "2026-10-06T02:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
