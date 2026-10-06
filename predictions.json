@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-05T21:42:13.970595",
+  "generated_at": "2026-10-06T19:53:00.579134",
   "season": "2025-26",
   "games": [
     {
-      "game": "ATL @ MEM",
-      "home_team": "MEM",
-      "away_team": "ATL",
-      "game_time": "2026-10-05T23:00Z",
+      "game": "CHA @ BKN",
+      "home_team": "BKN",
+      "away_team": "CHA",
+      "game_time": "2026-10-06T23:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -15,10 +15,10 @@
       "away_h2h": {}
     },
     {
-      "game": "DET @ PHX",
-      "home_team": "PHX",
-      "away_team": "DET",
-      "game_time": "2026-10-05T23:00Z",
+      "game": "OKC @ NO",
+      "home_team": "NO",
+      "away_team": "OKC",
+      "game_time": "2026-10-07T00:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -27,35 +27,36 @@
       "away_h2h": {}
     },
     {
-      "game": "PHI @ NY",
-      "home_team": "NY",
-      "away_team": "PHI",
-      "game_time": "2026-10-05T23:00Z",
-      "form_total": null,
+      "game": "UTAH @ DEN",
+      "home_team": "DEN",
+      "away_team": "UTAH",
+      "game_time": "2026-10-07T01:00Z",
+      "form_total": {
+        "predicted_total": 206.2,
+        "away_pts_pred": 115.1,
+        "home_pts_pred": 91.1
+      },
       "home_form": {},
       "away_form": {},
-      "h2h_total": null,
+      "h2h_total": {
+        "predicted_total": 206.0,
+        "away_pts_pred": 109.0,
+        "home_pts_pred": 97.0,
+        "h2h_games_used": 1
+      },
       "home_h2h": {},
       "away_h2h": {}
     },
     {
-      "game": "MIL @ MIN",
-      "home_team": "MIN",
-      "away_team": "MIL",
-      "game_time": "2026-10-06T00:00Z",
-      "form_total": null,
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "SAC @ LAL",
+      "game": "GS @ LAL",
       "home_team": "LAL",
-      "away_team": "SAC",
-      "game_time": "2026-10-06T02:00Z",
-      "form_total": null,
+      "away_team": "GS",
+      "game_time": "2026-10-07T02:00Z",
+      "form_total": {
+        "predicted_total": 228.7,
+        "away_pts_pred": 100.8,
+        "home_pts_pred": 127.9
+      },
       "home_form": {},
       "away_form": {},
       "h2h_total": null,
