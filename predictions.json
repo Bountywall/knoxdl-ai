@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-07T20:15:42.179996",
+  "generated_at": "2026-10-08T20:18:09.868972",
   "season": "2025-26",
   "games": [
     {
-      "game": "IND @ MIN",
-      "home_team": "MIN",
-      "away_team": "IND",
-      "game_time": "2026-10-07T23:00Z",
+      "game": "CLE @ BOS",
+      "home_team": "BOS",
+      "away_team": "CLE",
+      "game_time": "2026-10-08T23:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -15,25 +15,29 @@
       "away_h2h": {}
     },
     {
-      "game": "MEM @ ORL",
-      "home_team": "ORL",
-      "away_team": "MEM",
-      "game_time": "2026-10-08T00:00Z",
-      "form_total": null,
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "OKC @ MIL",
-      "home_team": "MIL",
-      "away_team": "OKC",
-      "game_time": "2026-10-08T00:00Z",
+      "game": "MIA @ NO",
+      "home_team": "NO",
+      "away_team": "MIA",
+      "game_time": "2026-10-08T23:30Z",
       "form_total": {
-        "predicted_total": 217.6,
-        "away_pts_pred": 115.6,
+        "predicted_total": 235.8,
+        "away_pts_pred": 126.9,
+        "home_pts_pred": 108.9
+      },
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "BKN @ PHI",
+      "home_team": "PHI",
+      "away_team": "BKN",
+      "game_time": "2026-10-08T23:30Z",
+      "form_total": {
+        "predicted_total": 209.6,
+        "away_pts_pred": 107.6,
         "home_pts_pred": 102.0
       },
       "home_form": {},
@@ -43,10 +47,10 @@
       "away_h2h": {}
     },
     {
-      "game": "CHI @ PHX",
-      "home_team": "PHX",
-      "away_team": "CHI",
-      "game_time": "2026-10-08T00:00Z",
+      "game": "NY @ WSH",
+      "home_team": "WSH",
+      "away_team": "NY",
+      "game_time": "2026-10-08T23:30Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
@@ -55,14 +59,35 @@
       "away_h2h": {}
     },
     {
-      "game": "POR @ GS",
-      "home_team": "GS",
-      "away_team": "POR",
-      "game_time": "2026-10-08T02:00Z",
+      "game": "SA @ ATL",
+      "home_team": "ATL",
+      "away_team": "SA",
+      "game_time": "2026-10-09T00:00Z",
       "form_total": null,
       "home_form": {},
       "away_form": {},
       "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "LAL @ SAC",
+      "home_team": "SAC",
+      "away_team": "LAL",
+      "game_time": "2026-10-09T02:30Z",
+      "form_total": {
+        "predicted_total": 232.4,
+        "away_pts_pred": 127.8,
+        "home_pts_pred": 104.6
+      },
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": {
+        "predicted_total": 230.0,
+        "away_pts_pred": 127.0,
+        "home_pts_pred": 103.0,
+        "h2h_games_used": 1
+      },
       "home_h2h": {},
       "away_h2h": {}
     }
