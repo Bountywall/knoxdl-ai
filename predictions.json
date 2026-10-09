@@ -1,93 +1,20 @@
 {
-  "generated_at": "2026-10-08T20:18:09.868972",
+  "generated_at": "2026-10-09T19:52:02.400646",
   "season": "2025-26",
   "games": [
     {
-      "game": "CLE @ BOS",
-      "home_team": "BOS",
-      "away_team": "CLE",
-      "game_time": "2026-10-08T23:00Z",
-      "form_total": null,
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "MIA @ NO",
-      "home_team": "NO",
-      "away_team": "MIA",
-      "game_time": "2026-10-08T23:30Z",
+      "game": "CHI @ MEM",
+      "home_team": "MEM",
+      "away_team": "CHI",
+      "game_time": "2026-10-10T00:00Z",
       "form_total": {
-        "predicted_total": 235.8,
-        "away_pts_pred": 126.9,
-        "home_pts_pred": 108.9
+        "predicted_total": 248.9,
+        "away_pts_pred": 126.8,
+        "home_pts_pred": 122.1
       },
       "home_form": {},
       "away_form": {},
       "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "BKN @ PHI",
-      "home_team": "PHI",
-      "away_team": "BKN",
-      "game_time": "2026-10-08T23:30Z",
-      "form_total": {
-        "predicted_total": 209.6,
-        "away_pts_pred": 107.6,
-        "home_pts_pred": 102.0
-      },
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "NY @ WSH",
-      "home_team": "WSH",
-      "away_team": "NY",
-      "game_time": "2026-10-08T23:30Z",
-      "form_total": null,
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "SA @ ATL",
-      "home_team": "ATL",
-      "away_team": "SA",
-      "game_time": "2026-10-09T00:00Z",
-      "form_total": null,
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": null,
-      "home_h2h": {},
-      "away_h2h": {}
-    },
-    {
-      "game": "LAL @ SAC",
-      "home_team": "SAC",
-      "away_team": "LAL",
-      "game_time": "2026-10-09T02:30Z",
-      "form_total": {
-        "predicted_total": 232.4,
-        "away_pts_pred": 127.8,
-        "home_pts_pred": 104.6
-      },
-      "home_form": {},
-      "away_form": {},
-      "h2h_total": {
-        "predicted_total": 230.0,
-        "away_pts_pred": 127.0,
-        "home_pts_pred": 103.0,
-        "h2h_games_used": 1
-      },
       "home_h2h": {},
       "away_h2h": {}
     }
