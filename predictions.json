@@ -1,16 +1,239 @@
 {
-  "generated_at": "2026-10-09T19:52:02.400646",
+  "generated_at": "2026-10-10T19:00:09.359309",
   "season": "2025-26",
   "games": [
     {
-      "game": "CHI @ MEM",
-      "home_team": "MEM",
-      "away_team": "CHI",
-      "game_time": "2026-10-10T00:00Z",
+      "game": "TOR @ LAC",
+      "home_team": "LAC",
+      "away_team": "TOR",
+      "game_time": "2026-10-10T22:30Z",
       "form_total": {
-        "predicted_total": 248.9,
-        "away_pts_pred": 126.8,
-        "home_pts_pred": 122.1
+        "predicted_total": 211.5,
+        "away_pts_pred": 93.4,
+        "home_pts_pred": 118.1
+      },
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "IND @ ATL",
+      "home_team": "ATL",
+      "away_team": "IND",
+      "game_time": "2026-10-10T23:00Z",
+      "form_total": {
+        "predicted_total": 255.6,
+        "away_pts_pred": 134.3,
+        "home_pts_pred": 121.3
+      },
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "WSH @ DET",
+      "home_team": "DET",
+      "away_team": "WSH",
+      "game_time": "2026-10-10T23:00Z",
+      "form_total": {
+        "predicted_total": 209.2,
+        "away_pts_pred": 104.6,
+        "home_pts_pred": 104.6
+      },
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "MIA @ MIN",
+      "home_team": "MIN",
+      "away_team": "MIA",
+      "game_time": "2026-10-11T00:00Z",
+      "form_total": {
+        "predicted_total": 236.3,
+        "away_pts_pred": 124.4,
+        "home_pts_pred": 111.9
+      },
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "BOS @ PHI",
+      "home_team": "PHI",
+      "away_team": "BOS",
+      "game_time": "2026-10-11T00:00Z",
+      "form_total": {
+        "predicted_total": 228.6,
+        "away_pts_pred": 115.2,
+        "home_pts_pred": 113.4
+      },
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "GS @ SAC",
+      "home_team": "SAC",
+      "away_team": "GS",
+      "game_time": "2026-10-11T00:30Z",
+      "form_total": {
+        "predicted_total": 222.9,
+        "away_pts_pred": 121.3,
+        "home_pts_pred": 101.6
+      },
+      "home_form": {},
+      "away_form": {
+        "Brandon Williams": {
+          "points": 13.6,
+          "rebounds": 2.5,
+          "assists": 2.9,
+          "steals": 1.0,
+          "blocks": 0.3,
+          "turnovers": 3.1,
+          "minutes": 17.4,
+          "games_analyzed": 3,
+          "confidence": 60,
+          "role_unstable": false,
+          "def_factor": 1.061,
+          "position": "G"
+        },
+        "Miles Kelly": {
+          "points": 12.0,
+          "rebounds": 2.7,
+          "assists": 2.6,
+          "steals": 0.4,
+          "blocks": 0.7,
+          "turnovers": 1.0,
+          "minutes": 14.3,
+          "games_analyzed": 3,
+          "confidence": 38,
+          "role_unstable": true,
+          "def_factor": 1.061,
+          "position": "G"
+        },
+        "Dalen Terry": {
+          "points": 11.9,
+          "rebounds": 5.0,
+          "assists": 4.5,
+          "steals": 1.8,
+          "blocks": 0.0,
+          "turnovers": 1.8,
+          "minutes": 21.6,
+          "games_analyzed": 3,
+          "confidence": 38,
+          "role_unstable": true,
+          "def_factor": 1.061,
+          "position": "G"
+        },
+        "Charles Bassey": {
+          "points": 10.3,
+          "rebounds": 7.0,
+          "assists": 1.4,
+          "steals": 2.0,
+          "blocks": 2.1,
+          "turnovers": 2.0,
+          "minutes": 18.2,
+          "games_analyzed": 3,
+          "confidence": 50,
+          "role_unstable": false,
+          "def_factor": 1.061,
+          "position": "C"
+        },
+        "Graham Ike": {
+          "points": 9.5,
+          "rebounds": 6.4,
+          "assists": 2.1,
+          "steals": 1.0,
+          "blocks": 0.3,
+          "turnovers": 2.0,
+          "minutes": 17.6,
+          "games_analyzed": 3,
+          "confidence": 48,
+          "role_unstable": false,
+          "def_factor": 1.061,
+          "position": "F"
+        },
+        "Will Richard": {
+          "points": 8.2,
+          "rebounds": 2.2,
+          "assists": 0.7,
+          "steals": 0.0,
+          "blocks": 0.3,
+          "turnovers": 0.7,
+          "minutes": 22.1,
+          "games_analyzed": 3,
+          "confidence": 44,
+          "role_unstable": false,
+          "def_factor": 1.061,
+          "position": "G"
+        },
+        "Malevy Leons": {
+          "points": 6.3,
+          "rebounds": 2.9,
+          "assists": 0.7,
+          "steals": 0.7,
+          "blocks": 0.4,
+          "turnovers": 1.4,
+          "minutes": 18.3,
+          "games_analyzed": 3,
+          "confidence": 38,
+          "role_unstable": true,
+          "def_factor": 1.061,
+          "position": "F"
+        },
+        "Alex Toohey": {
+          "points": 3.6,
+          "rebounds": 0.7,
+          "assists": 1.1,
+          "steals": 0.3,
+          "blocks": 1.3,
+          "turnovers": 0.0,
+          "minutes": 10.3,
+          "games_analyzed": 3,
+          "confidence": 38,
+          "role_unstable": true,
+          "def_factor": 1.061,
+          "position": "F"
+        },
+        "LJ Cryer": {
+          "points": 3.3,
+          "rebounds": 0.4,
+          "assists": 0.7,
+          "steals": 0.3,
+          "blocks": 0.0,
+          "turnovers": 1.4,
+          "minutes": 10.4,
+          "games_analyzed": 3,
+          "confidence": 38,
+          "role_unstable": true,
+          "def_factor": 1.061,
+          "position": "G"
+        }
+      },
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "PHX @ SA",
+      "home_team": "SA",
+      "away_team": "PHX",
+      "game_time": "2026-10-11T02:30Z",
+      "form_total": {
+        "predicted_total": 240.3,
+        "away_pts_pred": 121.3,
+        "home_pts_pred": 119.0
       },
       "home_form": {},
       "away_form": {},
