@@ -1,5 +1,42 @@
 {
-  "generated_at": "2026-10-19T20:16:29.457542",
+  "generated_at": "2026-10-20T18:47:22.166898",
   "season": "2025-26",
-  "games": []
+  "games": [
+    {
+      "game": "DET @ BOS",
+      "home_team": "BOS",
+      "away_team": "DET",
+      "game_time": "2026-10-20T19:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "NY @ PHI",
+      "home_team": "PHI",
+      "away_team": "NY",
+      "game_time": "2026-10-20T23:00Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    },
+    {
+      "game": "SA @ OKC",
+      "home_team": "OKC",
+      "away_team": "SA",
+      "game_time": "2026-10-21T01:30Z",
+      "form_total": null,
+      "home_form": {},
+      "away_form": {},
+      "h2h_total": null,
+      "home_h2h": {},
+      "away_h2h": {}
+    }
+  ]
 }
